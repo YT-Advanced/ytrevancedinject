@@ -1,7 +1,7 @@
 id=ytrevancedinject
 name=YouTube Dynamic Mount
 package=com.google.android.youtube
-version=v19.25.39
+version=19.25.39
 versionCode=192539
 author=HuskyDG (not Alireza)
 description=YouTube ReVanced repacked by HuskyDG. Require Magisk Process Monitor tool v2.3+ for Dynamic Mount
