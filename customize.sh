@@ -3,15 +3,13 @@
 
 if [ $BOOTMODE = false ]; then
 	ui_print "- Installing through TWRP Not supported"
-	ui_print "- Intsall this module via Magisk Manager"
+	ui_print "- Install this module via APatch/KernelSU/Magisk Manager"
 	abort "- Aborting installation !!"
 fi
 api_level_arch_detect
 
-MAGISKTMP="$(magisk --path)" || MAGISKTMP=/sbin
-
-PKGNAME="$(grep_prop package "$MODPATH/module.prop")"
 APPNAME="YouTube"
+PKGNAME="$(grep_prop package "$MODPATH/module.prop")"
 STOCKAPPVER=$(dumpsys package $PKGNAME | grep versionName | cut -d= -f 2 | sed -n '1p')
 RVAPPVER="$(grep_prop version "$MODPATH/module.prop")"
 URL="https://www.apkmirror.com/apk/google-inc/youtube/youtube-$(echo -n "$RVAPPVER" | tr "." "-")-release/"
@@ -24,7 +22,7 @@ then
 	abort "- Aborting installation !!"
 fi
 
-[ ! -d "$MAGISKTMP/.magisk/modules/magisk_proc_monitor" ] && {
+[ ! -d "$/data/adb/modules/magisk_proc_monitor" ] && {
     MURL=http://github.com/HuskyDG/magisk_proc_monitor
     ui_print "- Process monitor tool is not installed"
     ui_print "  Please install it from $MURL"
@@ -41,16 +39,9 @@ then
 	abort "- Aborting installation !!"
 fi
 
-ui_print "- Install sqlite3 plug-in for detach"
-mkdir "$MODPATH/bin"
-unzip -oj "$MODPATH/sqlite3.zip" "$ABI/sqlite3" -d "$MODPATH/bin" &>/dev/null || abort "! Unzip failed"
-chmod 755 "$MODPATH/bin/sqlite3"
-rm -rf "$MODPATH/sqlite3.zip"
-
 # Disable battery optimization for YouTube ReVanced
 sleep 1
 ui_print "- Disable Battery Optimization for YouTube ReVanced"
 dumpsys deviceidle whitelist +$PKGNAME > /dev/null 2>&1
-
 
 ui_print "- Install Successful !!"
